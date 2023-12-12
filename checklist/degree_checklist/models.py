@@ -1,16 +1,6 @@
 from django.db import models
 
 
-class DegreeType(models.Model):
-    dName = models.CharField(
-        max_length=50)
-    dType = models.CharField(
-        max_length=50)
-
-    def str(self):
-        return self.dName
-
-
 class Course (models.Model):
     cName = models.CharField(
         max_length=50)
@@ -25,6 +15,26 @@ class Course (models.Model):
 
     def str(self):
         return self.cName
+
+
+class DegreeType(models.Model):
+    dName = models.CharField(
+        max_length=50)
+    dType = models.CharField(
+        max_length=50)
+    program = models.ForeignKey(
+        Program, on_delete=models.CASCADE)
+    core = models.ForeignKey(
+        Core, on_delete=models.CASCADE)
+    isCore = models.BooleanField()
+    isDegree = models.BooleanField()
+    isProgram = models.BooleanField()
+
+    def str(self):
+        return self.program
+    def str(self):
+        return self.dName
+
 
 
 class Core (models.Model):
@@ -63,18 +73,6 @@ class ProCourse (models.Model):
     isProgram = models.BooleanField()
 
 
-class DegreeRequirements (models.Model):
-    program = models.ForeignKey(
-        Program, on_delete=models.CASCADE)
-    core = models.ForeignKey(
-        Core, on_delete=models.CASCADE)
-    isCore = models.BooleanField()
-    isDegree = models.BooleanField()
-    isProgram = models.BooleanField()
-
-    def str(self):
-        return self.program
-
 
 class Curriculum (models.Model):
     curName = models.CharField(
@@ -83,5 +81,3 @@ class Curriculum (models.Model):
         help_text="Curriculum total hours.")
     degreeType = models.ForeignKey(
         DegreeType, on_delete=models.CASCADE)
-    degreeRequirements = models.ForeignKey(
-        DegreeRequirements, on_delete=models.CASCADE)
